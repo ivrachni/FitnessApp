@@ -1,5 +1,6 @@
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:fitnessapp/common_widget/on_boarding_page.dart';
+import 'package:fitnessapp/view/logIn/Sign_up_view.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingView extends StatefulWidget {
@@ -103,6 +104,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                           setState(() {});
                         } else {
                           //Open welcome Page
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SignUpView()));
                         }
                       },
                     )),
