@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FitnessApp',
+      title: 'FitnesssApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: TColor.primaryColor1,
