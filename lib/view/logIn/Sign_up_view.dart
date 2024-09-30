@@ -13,7 +13,7 @@ class _SignUpViewState extends State<SignUpView> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: TColor.white,
-        body: SingleChildScrollView(
+        body: const SingleChildScrollView(
           child: Column(
             children: [],
           ),
