@@ -13,4 +13,5 @@ class TColor {
   static Color get black => Colors.black;
   static Color get white => Colors.white;
   static Color get grey => const Color(0xff786F72);
+  static Color get lightGrey => const Color(0xffF7F8F8);
 }
