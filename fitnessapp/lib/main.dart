@@ -1,5 +1,4 @@
 import 'package:fitnessapp/common/color_extension.dart';
-import 'package:fitnessapp/view/onBoarding/on_boarding_view.dart';
 import 'package:fitnessapp/view/onBoarding/started_view.dart';
 import 'package:flutter/material.dart';
 
