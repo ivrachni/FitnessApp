@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:fitnessapp/common_widget/Round_button.dart';
 import 'package:fitnessapp/common_widget/round_textfield.dart';
@@ -12,7 +13,114 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  OverlayEntry? _overlayEntry;
+
   bool isCheck = false;
+
+//---------------------------------------------------CREATE_ACCOUNT_BOXES---------------------------------------------------------
+  bool isFormValid = false;
+
+  void _createAccount() {
+    if (isFormValid) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginView()),
+      );
+    }
+  }
+
+  //---------------------------------------------------Loading_Overlay------------------------------------------------------------------
+
+  void showLoadingOverlay() {
+    _overlayEntry = OverlayEntry(
+      builder: (context) => Positioned.fill(
+        child: Material(
+          color: Colors.black.withOpacity(0.5),
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      ),
+    );
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void hideLoadingOverlay() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
+
+  //------------------------------------------------Show_Error_Message------------------------------------------------------------
+  void showErrorMessage(String message) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(message),
+          );
+        });
+  }
+
+  void signUserUp() async {
+    // Show loading circle
+    // showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   builder: (context) {
+    //     return const Center(child: CircularProgressIndicator());
+    //   },
+    // );
+
+    showLoadingOverlay();
+
+    try {
+      // Check if password and confirm password are the same
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        // Navigate to Home Screen
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginView()),
+        );
+      } else {
+        // Navigator.pop(context);
+        // Show error message if passwords don't match
+        showErrorMessage("Passwords don't match");
+        // Navigator.pop(context);
+
+        // Navigate to Home Screen
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => SignUpView()));
+      }
+    } on FirebaseAuthException catch (e) {
+      // Handle errors
+      // Navigator.pop(context); // Close the loading spinner
+      if (e.code == 'email-already-in-use') {
+        showErrorMessage("This email is already in use.");
+        // Navigator.pop(context);
+      } else if (e.code == 'weak-password') {
+        showErrorMessage("Your password is too weak.");
+        // Navigator.pop(context);
+      } else {
+        showErrorMessage("Something went wrong. Please try again.");
+      }
+    } catch (e) {
+      Navigator.pop(
+          context); // Close the loading spinner in case of unexpected errors
+      showErrorMessage("An unexpected error occurred.");
+    } finally {
+      hideLoadingOverlay();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
@@ -39,24 +147,27 @@ class _SignUpViewState extends State<SignUpView> {
                 SizedBox(
                   height: media.width * 0.05,
                 ),
-                const RoundTextField(
+                RoundTextField(
                   hitText: "First Name",
                   icon: "assets/images/user_text.png",
+                  controller: firstNameController,
                 ),
                 SizedBox(
                   height: media.width * 0.04,
                 ),
-                const RoundTextField(
+                RoundTextField(
                   hitText: "Last Name",
                   icon: "assets/images/user_text.png",
+                  controller: lastNameController,
                 ),
                 SizedBox(
                   height: media.width * 0.04,
                 ),
-                const RoundTextField(
+                RoundTextField(
                   hitText: "Email",
                   icon: "assets/images/email.png",
                   keyboardType: TextInputType.emailAddress,
+                  controller: emailController,
                 ),
                 SizedBox(
                   height: media.width * 0.04,
@@ -78,6 +189,29 @@ class _SignUpViewState extends State<SignUpView> {
                             fit: BoxFit.contain,
                             color: TColor.grey,
                           ))),
+                  controller: passwordController,
+                ),
+                SizedBox(
+                  height: media.width * 0.04,
+                ),
+                RoundTextField(
+                  hitText: "Confirm Password",
+                  icon: "assets/images/lock.png",
+                  obscureText: true,
+                  rigtIcon: TextButton(
+                      onPressed: () {},
+                      child: Container(
+                          alignment: Alignment.center,
+                          width: 20,
+                          height: 20,
+                          child: Image.asset(
+                            "assets/images/show_password.png",
+                            width: 20,
+                            height: 20,
+                            fit: BoxFit.contain,
+                            color: TColor.grey,
+                          ))),
+                  controller: confirmPasswordController,
                 ),
                 Row(
                   // crossAxisAlignment: CrossAxisAlignment.,
@@ -111,10 +245,9 @@ class _SignUpViewState extends State<SignUpView> {
                 RoundButton(
                     title: "Register",
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const LoginView()));
+                      {
+                        signUserUp();
+                      }
                     }),
                 SizedBox(
                   height: media.width * 0.04,
