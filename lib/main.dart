@@ -1,5 +1,6 @@
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:fitnessapp/authentication/auth_service_screen.dart';
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:fitnessapp/view/onBoarding/started_view.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         fontFamily: "Poppins",
         useMaterial3: true,
       ),
-      home: const StartedView(),
+      home: const AuthPage(),
     );
   }
 }

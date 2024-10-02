@@ -5,6 +5,7 @@ import 'package:fitnessapp/common/color_extension.dart';
 import 'package:fitnessapp/common_widget/Round_button.dart';
 import 'package:fitnessapp/common_widget/round_textfield.dart';
 import 'package:fitnessapp/view/logIn/LogIn_view.dart';
+import 'package:fitnessapp/view/logIn/complete_profile.dart';
 import 'package:flutter/material.dart';
 
 class SignUpView extends StatefulWidget {
@@ -41,7 +42,7 @@ class _SignUpViewState extends State<SignUpView> {
       if (isFormValid) {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const LoginView()),
+          MaterialPageRoute(builder: (context) => const CompleteProfile()),
         );
       }
     }
