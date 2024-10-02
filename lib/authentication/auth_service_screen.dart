@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fitnessapp/view/logIn/LogIn_view.dart';
 import 'package:fitnessapp/view/logIn/complete_profile.dart';
 import 'package:fitnessapp/view/onBoarding/started_view.dart';
 import 'package:flutter/material.dart';
