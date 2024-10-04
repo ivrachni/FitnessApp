@@ -1,6 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
-// ignore: duplicate_import
 import 'package:fitnessapp/common/color_extension.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fitnessapp/common_widget/Round_button.dart';
 import 'package:fitnessapp/common_widget/round_textfield.dart';
 import 'package:fitnessapp/view/logIn/LogIn_view.dart';
@@ -21,12 +20,10 @@ class _SignUpViewState extends State<SignUpView> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   OverlayEntry? _overlayEntry;
-
   bool isCheck = false;
-
-//---------------------------------------------------CREATE_ACCOUNT_BOXES---------------------------------------------------------
   bool isFormValid = false;
 
+  //---------------------------------------------------CREATE_ACCOUNT_BOXES---------------------------------------------------------
   void _createAccount() {
     if (isFormValid) {
       Navigator.push(
@@ -37,7 +34,6 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   //---------------------------------------------------Loading_Overlay------------------------------------------------------------------
-
   void showLoadingOverlay() {
     _overlayEntry = OverlayEntry(
       builder: (context) => Positioned.fill(
@@ -69,54 +65,33 @@ class _SignUpViewState extends State<SignUpView> {
   }
 
   void signUserUp() async {
-    // Show loading circle
-    // showDialog(
-    //   context: context,
-    //   barrierDismissible: false,
-    //   builder: (context) {
-    //     return const Center(child: CircularProgressIndicator());
-    //   },
-    // );
-
     showLoadingOverlay();
 
     try {
-      // Check if password and confirm password are the same
       if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
-        // Navigate to Home Screen
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const LoginView()),
         );
       } else {
-        // Navigator.pop(context);
-        // Show error message if passwords don't match
         showErrorMessage("Passwords don't match");
-        // Navigator.pop(context);
-
-        // Navigate to Home Screen
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => SignUpView()));
       }
     } on FirebaseAuthException catch (e) {
-      // Handle errors
-      // Navigator.pop(context); // Close the loading spinner
       if (e.code == 'email-already-in-use') {
         showErrorMessage("This email is already in use.");
-        // Navigator.pop(context);
       } else if (e.code == 'weak-password') {
         showErrorMessage("Your password is too weak.");
-        // Navigator.pop(context);
       } else {
         showErrorMessage("Something went wrong. Please try again.");
       }
     } catch (e) {
-      Navigator.pop(
-          context); // Close the loading spinner in case of unexpected errors
+      Navigator.pop(context);
       showErrorMessage("An unexpected error occurred.");
     } finally {
       hideLoadingOverlay();
@@ -216,7 +191,6 @@ class _SignUpViewState extends State<SignUpView> {
                   controller: confirmPasswordController,
                 ),
                 Row(
-                  // crossAxisAlignment: CrossAxisAlignment.,
                   children: [
                     IconButton(
                       onPressed: () {
@@ -247,15 +221,12 @@ class _SignUpViewState extends State<SignUpView> {
                 RoundButton(
                     title: "Register",
                     onPressed: () {
-                      {
-                        signUserUp();
-                      }
+                      signUserUp();
                     }),
                 SizedBox(
                   height: media.width * 0.04,
                 ),
                 Row(
-                  // crossAxisAlignment: CrossAxisAlignment.,
                   children: [
                     Expanded(
                         child: Container(
