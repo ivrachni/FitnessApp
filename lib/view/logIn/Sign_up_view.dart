@@ -1,6 +1,7 @@
 import 'package:fitnessapp/common/color_extension.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+// ignore: duplicate_import
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:fitnessapp/common_widget/Round_button.dart';
 import 'package:fitnessapp/common_widget/round_textfield.dart';

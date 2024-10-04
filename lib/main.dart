@@ -1,9 +1,7 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fitnessapp/authentication/auth_service_screen.dart';
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:flutter/material.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,5 +27,4 @@ class MyApp extends StatelessWidget {
       home: const AuthPage(),
     );
   }
-}
 }
