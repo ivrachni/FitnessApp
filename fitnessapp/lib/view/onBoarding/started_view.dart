@@ -49,7 +49,7 @@ class _StartedViewState extends State<StartedView> {
                   child: RoundButton(
                       title: "Get Started",
                       type: isChangeColor
-                          ? RoundButtonType.textGrandient
+                          ? RoundButtonType.textGradient
                           : RoundButtonType.bgGradient,
                       onPressed: () {
                         if (isChangeColor) {

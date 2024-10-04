@@ -1,67 +1,83 @@
 import 'package:fitnessapp/common/color_extension.dart';
 import 'package:flutter/material.dart';
 
-enum RoundButtonType { bgGradient, textGrandient }
+enum RoundButtonType { bgGradient, textGradient }
 
 class RoundButton extends StatelessWidget {
   final String title;
   final RoundButtonType type;
   final VoidCallback onPressed;
-  const RoundButton(
-      {super.key,
-      required this.title,
-      this.type = RoundButtonType.textGrandient,
-      required this.onPressed});
+
+  const RoundButton({
+    super.key,
+    required this.title,
+    this.type = RoundButtonType.bgGradient, // Default set to bgGradient
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-            colors: TColor.primaryG,
-            begin: Alignment.centerLeft,
-            end: Alignment.topRight),
+        gradient: type == RoundButtonType.bgGradient
+            ? LinearGradient(
+                colors: TColor.primaryG,
+                begin: Alignment.centerLeft,
+                end: Alignment.topRight)
+            : null,
         borderRadius: BorderRadius.circular(25),
         boxShadow: type == RoundButtonType.bgGradient
             ? const [
                 BoxShadow(
-                    color: Colors.black26, blurRadius: 2, offset: Offset(0, 2))
+                  color: Colors.black26,
+                  blurRadius: 2,
+                  offset: Offset(0, 2),
+                ),
               ]
             : null,
       ),
       child: MaterialButton(
-          onPressed: onPressed,
-          height: 50,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-          textColor: TColor.primaryColor1,
-          minWidth: double.maxFinite,
-          elevation: type == RoundButtonType.bgGradient ? 0 : 1,
-          color: type == RoundButtonType.bgGradient
-              ? Colors.transparent
-              : TColor.white,
-          child: type == RoundButtonType.bgGradient
-              ? Text(title,
+        onPressed: onPressed,
+        height: 50,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(25),
+        ),
+        textColor: TColor.primaryColor1,
+        minWidth: double.maxFinite,
+        elevation: type == RoundButtonType.bgGradient ? 0 : 1,
+        color: type == RoundButtonType.bgGradient
+            ? Colors.transparent
+            : TColor.white,
+        child: type == RoundButtonType.bgGradient
+            ? Text(
+                title,
+                style: TextStyle(
+                  color: TColor.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w700,
+                ),
+              )
+            : ShaderMask(
+                blendMode: BlendMode.srcIn,
+                shaderCallback: (bounds) {
+                  return LinearGradient(
+                    colors: TColor.primaryG,
+                    begin: Alignment.centerLeft,
+                    end: Alignment.topRight,
+                  ).createShader(
+                    Rect.fromLTRB(0, 0, bounds.width, bounds.height),
+                  );
+                },
+                child: Text(
+                  title,
                   style: TextStyle(
-                      color: TColor.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700))
-              : ShaderMask(
-                  blendMode: BlendMode.srcIn,
-                  shaderCallback: (bounds) {
-                    return LinearGradient(
-                            colors: TColor.primaryG,
-                            begin: Alignment.centerLeft,
-                            end: Alignment.topRight)
-                        .createShader(
-                            Rect.fromLTRB(0, 0, bounds.width, bounds.height));
-                  },
-                  child: Text(title,
-                      style: TextStyle(
-                          color: TColor.primaryColor1,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700)),
-                )),
+                    color: TColor.primaryColor1,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+      ),
     );
   }
 }
